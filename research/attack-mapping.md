@@ -1,0 +1,20 @@
+# ATT&CK mapping research
+
+**Threat:** Scattered Spider (G1015)
+**Primary report:** CISA, *Scattered Spider* (AA23-320A).
+**Mapping rule:** The technique is selected for the behaviour described in the cited passage, not merely because the advisory contains an ATT&CK ID or a matching keyword. The report's July 2025 update calls the federation-provider behaviour historical and says it has not been identified as a current TTP; that qualification is retained below.
+
+| Technique ID/name | Tactic | Reported behaviour | Source and section | Why the mapping fits |
+|---|---|---|---|---|
+| [T1087.002 — Account Discovery: Domain Account](https://attack.mitre.org/techniques/T1087/002/) | Discovery | Scattered Spider enumerates the target organization's Active Directory and identifies domain accounts. | CISA AA23-320A, “Discovery, Lateral Movement, and Exfiltration”; MITRE [G1015](https://attack.mitre.org/groups/G1015/) T1087.002 entry. | Listing accounts in a domain is the behavior defined by the domain-account sub-technique. This is account discovery, not proof that credentials were obtained or used. |
+| [T1078.002 — Valid Accounts: Domain Accounts](https://attack.mitre.org/techniques/T1078/002/) | Initial Access; also reported in the advisory in the context of continued access and privilege escalation | Actors socially engineer help-desk staff to reset passwords and/or transfer MFA tokens, then take over users' accounts in SSO environments. | CISA AA23-320A, “Reconnaissance, Resource Development, and Initial Access”; MITRE [G1015](https://attack.mitre.org/groups/G1015/) T1078.002 entry. | The described outcome is use of legitimate user/domain accounts for access. The help-desk deception is part of the procedure leading to the valid-account behavior; it is not itself the valid-account technique. |
+| [T1556.006 — Modify Authentication Process: Multi-Factor Authentication](https://attack.mitre.org/techniques/T1556/006/) | Credential Access; Persistence; Privilege Escalation; Defense Evasion | After compromising an account, Scattered Spider registers its own MFA tokens to retain access. | CISA AA23-320A, “Execution, Persistence, and Privilege Escalation”; MITRE [G1015](https://attack.mitre.org/groups/G1015/) T1556.006 entry. | Registering an actor-controlled MFA method changes the authentication process and can preserve access after initial compromise. The advisory's specific registration behavior supports this mapping. |
+| [T1484.002 — Domain or Tenant Policy Modification: Trust Modification](https://attack.mitre.org/techniques/T1484/002/) | Defense Evasion; Privilege Escalation | Historically, actors added a federated identity provider to the victim's SSO tenant and enabled automatic account linking, allowing sign-in as matching tenant accounts. | CISA AA23-320A, “Execution, Persistence, and Privilege Escalation”; MITRE [G1015](https://attack.mitre.org/groups/G1015/) T1484.002 entry. CISA explicitly characterizes this as historical and not identified as a current TTP. | Adding an identity provider and changing federation/account-linking trust alters tenant trust configuration; the reported access to other accounts explains the privilege impact. Do not describe this as a current observed procedure. |
+
+### Identity/access relevance
+
+All four mappings concern identity data or identity-backed access. T1078.002 and T1556.006 are the most directly relevant to account authentication and access continuity. The CISA advisory's federation behavior is historical, which limits how it should be used for current threat claims.
+
+### Local test boundary
+
+The planned lab-only test is **T1057 — Process Discovery**, using a harmless local process listing. It is not among the four researched mappings and is not evidence that Scattered Spider used T1057. See [the test procedure](../lab/test-procedure.md).

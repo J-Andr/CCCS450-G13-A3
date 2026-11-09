@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Temporary files
+*.tmp
+*.bak
+
+# Sensitive information
+.env
+*.key
+*.pem
+
+# Personal/system files
+.DS_Store
+Thumbs.db
